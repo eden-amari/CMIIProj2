@@ -15,6 +15,7 @@ TagManager:
   - BulletPrefab
   - Bullet
   - CinemachineTarget
+  - healthPack
   layers:
   - Default
   - TransparentFX

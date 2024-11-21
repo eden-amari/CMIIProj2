@@ -81,13 +81,14 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Move()
-    {
+    { 
+
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        Camera camera = Camera.main;
-        Vector3 forward = camera.transform.forward;
-        Vector3 right = camera.transform.right;
+        //Camera camera = Camera.main;
+        Vector3 forward = transform.forward;
+        Vector3 right = transform.right;
 
         forward.y = 0;
         right.y = 0;
