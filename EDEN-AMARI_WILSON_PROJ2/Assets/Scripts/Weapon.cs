@@ -38,13 +38,13 @@ public class Weapon : MonoBehaviour
     {
         if ((playerInventory.currentWeapon != this) && (this.tag == "Gun"))
         {
-            Vector3 rotationToAdd = new Vector3(0, 0, 1);
+            Vector3 rotationToAdd = new Vector3(0, 0, .5f);
             transform.Rotate(rotationToAdd);
         }
 
-        else if ((playerInventory.currentWeapon != this) && (this.tag == "GreandeLauncher"))
+        else if ((playerInventory.currentWeapon != this) && (this.tag == "GrenadeLauncher"))
         {
-            Vector3 rotationToAdd = new Vector3(1, 0, 0);
+            Vector3 rotationToAdd = new Vector3(0, .5f, 0);
             transform.Rotate(rotationToAdd);
         }
 

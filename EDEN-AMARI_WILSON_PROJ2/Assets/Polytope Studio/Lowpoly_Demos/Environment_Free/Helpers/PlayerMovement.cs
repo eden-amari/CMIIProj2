@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     public int treasureCount = 0;
     public int treasureLeft = 3;
 
-    public int enemiesLeft = 8;
+    public int enemiesLeft = 5;
     public int enemiesDefeated = 0;
 
     public TextMeshProUGUI treasureCountText;
@@ -209,6 +209,13 @@ public class PlayerMovement : MonoBehaviour
             treasureLeft--;
             UpdateTreasureText();
             Destroy(collision.gameObject);
+        }
+        
+        else if (collision.gameObject.CompareTag("ammoBox"))
+        {
+            Destroy(collision.gameObject);
+            weapon.bulletCount += 5;
+            weapon.UpdateBulletCountText();
         }
     }
 }

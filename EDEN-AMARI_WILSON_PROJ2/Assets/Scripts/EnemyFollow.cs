@@ -50,4 +50,3 @@ public class EnemyFollow : MonoBehaviour
         transform.position += direction.normalized * moveSpeed * Time.deltaTime;
     }
 }
-

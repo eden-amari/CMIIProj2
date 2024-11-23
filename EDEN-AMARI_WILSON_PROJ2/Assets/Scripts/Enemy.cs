@@ -10,13 +10,13 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         playerMovement = FindFirstObjectByType<PlayerMovement>();
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     void OnCollisionEnter(Collision collision)
     {
@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour
         {
             // Destroy the enemy object
             Destroy(gameObject);
+            Destroy(collision.gameObject);
             if (playerMovement != null)
             {
                 playerMovement.enemiesDefeated++;
@@ -39,7 +40,7 @@ public class Enemy : MonoBehaviour
         }
 
         // Always destroy the bullet on collision
-        Destroy(collision.gameObject);
-      
+        
+
     }
 }
