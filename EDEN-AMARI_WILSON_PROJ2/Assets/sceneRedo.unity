@@ -7130,6 +7130,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 401033737}
     - target: {fileID: 412743355134270121, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
+      propertyPath: treasureScript
+      value: 
+      objectReference: {fileID: 2142841941}
+    - target: {fileID: 412743355134270121, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
       propertyPath: projectilePrefab
       value: 
       objectReference: {fileID: 3814657112248532630, guid: 5001fb2836312be4c83c8e8d19571823, type: 3}

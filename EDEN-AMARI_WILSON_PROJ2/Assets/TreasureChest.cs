@@ -52,10 +52,7 @@ public class TreasureChest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isPlayerInRange)
-        {
-            Patrol();
-        }
+    
 
         if (isPlayerWithTreasure || isPlayerInRange)
         {
