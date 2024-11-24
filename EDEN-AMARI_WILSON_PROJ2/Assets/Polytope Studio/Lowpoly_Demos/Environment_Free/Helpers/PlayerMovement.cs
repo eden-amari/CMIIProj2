@@ -230,11 +230,11 @@ public class PlayerMovement : MonoBehaviour
             weapon.UpdateBulletCountText();
         }
 
-        else if (collision.gameObject.CompareTag("enemyBullet"))
-        {
-            lives--;
-            UpdateLifeText();
-        }
+        //else if (collision.gameObject.CompareTag("enemyBullet"))
+        //{
+        //    lives--;
+        //    UpdateLifeText();
+        //}
         else if (collision.gameObject.CompareTag("healthPack"))
         {
             if ((lives>=1) && (lives<3))
