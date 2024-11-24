@@ -128,9 +128,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 1799797664}
     m_Modifications:
     - target: {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1740429218}
+    - target: {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
       propertyPath: gunSpawnPoint
       value: 
       objectReference: {fileID: 1151691772}
+    - target: {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
+      propertyPath: treasureScript
+      value: 
+      objectReference: {fileID: 999842967}
     - target: {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
       propertyPath: projectilePrefab
       value: 
@@ -191,7 +199,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: man (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4925429565172434428, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
@@ -200,7 +209,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5697463352070971206, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 953231769}
+      addedObject: {fileID: 953231773}
   m_SourcePrefab: {fileID: 100100000, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
 --- !u!4 &1992573 stripped
 Transform:
@@ -1296,41 +1305,16 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1610809229}
   m_SourcePrefab: {fileID: 100100000, guid: 8ac33b2347e9f3c44b5343e4d23173f9, type: 3}
---- !u!1 &156109945 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5697463352070971206, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
-  m_PrefabInstance: {fileID: 918503217}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &163849024 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1025681519537473006, guid: aa99a810914c5b84b9bc5d51f95dd05c, type: 3}
   m_PrefabInstance: {fileID: 555993448}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &164762900 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5697463352070971206, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
-  m_PrefabInstance: {fileID: 1372118728}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &164762901 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4925429565172434428, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
   m_PrefabInstance: {fileID: 1372118728}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &164762902
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 164762900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc66457455decc14cb2ec08c21a15b81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1740429218}
-  followRange: 10
-  moveSpeed: 3
 --- !u!1 &166030667
 GameObject:
   m_ObjectHideFlags: 0
@@ -5155,13 +5139,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e36b895981ad349bf8645198252ab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treasureScript: {fileID: 0}
-  enemyFollow: {fileID: 0}
-  treasureChest: {fileID: 0}
+  player: {fileID: 0}
+  enemy: {fileID: 0}
+  treasureCollider: {fileID: 0}
   projectilePrefab: {fileID: 0}
   gunSpawnPoint: {fileID: 0}
   shootingSpeed: 10
   shootInterval: 2.5
+  patrolPoints: []
+  moveSpeed: 1.5
+  pauseTime: 2
+  rotationSpeed: 2
 --- !u!1001 &786526531
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5384,31 +5372,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1694005130}
   m_SourcePrefab: {fileID: 100100000, guid: f89105f1a7259a7438e6b355f754ca89, type: 3}
---- !u!1 &811927138 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8337795529860036803, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
-  m_PrefabInstance: {fileID: 903185157}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &811927139 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8718437227229995641, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
   m_PrefabInstance: {fileID: 903185157}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &811927147
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 811927138}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc66457455decc14cb2ec08c21a15b81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1740429218}
-  followRange: 25
-  moveSpeed: 3
 --- !u!4 &829702034 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1025681519537473006, guid: aa99a810914c5b84b9bc5d51f95dd05c, type: 3}
@@ -5745,6 +5713,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1799797664}
     m_Modifications:
     - target: {fileID: 412743355134270121, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 811927139}
+    - target: {fileID: 412743355134270121, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 1740429218}
@@ -5760,6 +5732,10 @@ PrefabInstance:
       propertyPath: projectilePrefab
       value: 
       objectReference: {fileID: 3814657112248532630, guid: 5001fb2836312be4c83c8e8d19571823, type: 3}
+    - target: {fileID: 412743355134270121, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
+      propertyPath: treasureCollider
+      value: 
+      objectReference: {fileID: 999842965}
     - target: {fileID: 7282348490069662131, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
       propertyPath: m_Center.y
       value: 0.71
@@ -5827,9 +5803,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 621690555}
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8337795529860036803, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 811927147}
     - targetCorrespondingSourceObject: {fileID: 6507048931830467856, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
       insertIndex: -1
       addedObject: {fileID: 783478195}
@@ -5967,6 +5940,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 192522025}
     m_Modifications:
     - target: {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 1868710798}
+    - target: {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1740429218}
+    - target: {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
       propertyPath: gunSpawnPoint
       value: 
       objectReference: {fileID: 1136166439}
@@ -5974,6 +5955,10 @@ PrefabInstance:
       propertyPath: projectilePrefab
       value: 
       objectReference: {fileID: 3814657112248532630, guid: 5001fb2836312be4c83c8e8d19571823, type: 3}
+    - target: {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
+      propertyPath: treasureCollider
+      value: 
+      objectReference: {fileID: 1861060296}
     - target: {fileID: 4925429565172434428, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.9318182
@@ -6036,10 +6021,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4925429565172434428, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1136166439}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5697463352070971206, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1868710802}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
 --- !u!1 &929221997
 GameObject:
@@ -6311,7 +6293,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4925429565172434428, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
   m_PrefabInstance: {fileID: 1616056}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &953231769
+--- !u!114 &953231773
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6320,12 +6302,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 953231767}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc66457455decc14cb2ec08c21a15b81, type: 3}
+  m_Script: {fileID: 11500000, guid: b2e36b895981ad349bf8645198252ab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1740429218}
-  followRange: 25
-  moveSpeed: 3
+  enemy: {fileID: 953231768}
+  treasureCollider: {fileID: 999842965}
+  projectilePrefab: {fileID: 3814657112248532630, guid: 5001fb2836312be4c83c8e8d19571823, type: 3}
+  gunSpawnPoint: {fileID: 1151691772}
+  shootingSpeed: 10
+  shootInterval: 2.5
+  patrolPoints: []
+  moveSpeed: 1.5
+  pauseTime: 2
+  rotationSpeed: 2
 --- !u!1 &959128187 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7f8bb81875cef414c859c7f5f457a58a, type: 3}
@@ -6760,18 +6750,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 068cba2005edfed42a9f0df7f2140bfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1740429218}
-  enemy1: {fileID: 811927139}
-  enemy2: {fileID: 953231768}
-  patrolPoints1:
-  - {fileID: 1773042837}
-  - {fileID: 1006753308}
-  patrolPoints2:
-  - {fileID: 4878681}
-  - {fileID: 1949340320}
-  moveSpeed: 3
-  pauseTime: 2
-  rotationSpeed: 2
+  isPlayerWithTreasure: 0
+  isPlayerInRange: 0
 --- !u!1 &1006753307
 GameObject:
   m_ObjectHideFlags: 0
@@ -7118,6 +7098,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 2142841935}
     m_Modifications:
     - target: {fileID: 412743355134270121, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 2067569581}
+    - target: {fileID: 412743355134270121, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 1740429218}
@@ -7137,6 +7121,10 @@ PrefabInstance:
       propertyPath: projectilePrefab
       value: 
       objectReference: {fileID: 3814657112248532630, guid: 5001fb2836312be4c83c8e8d19571823, type: 3}
+    - target: {fileID: 412743355134270121, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
+      propertyPath: treasureCollider
+      value: 
+      objectReference: {fileID: 2142841939}
     - target: {fileID: 7282348490069662131, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
       propertyPath: m_Center.y
       value: 0.71
@@ -7203,10 +7191,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8718437227229995641, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1013598630}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8337795529860036803, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2067569582}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
 --- !u!1 &1069595049
 GameObject:
@@ -8026,11 +8011,6 @@ CanvasRenderer:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1025681519537473006, guid: aa99a810914c5b84b9bc5d51f95dd05c, type: 3}
   m_PrefabInstance: {fileID: 1527946947}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1206686395 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5697463352070971206, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
-  m_PrefabInstance: {fileID: 1814877658}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1207228808
 PrefabInstance:
@@ -9114,6 +9094,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 192522025}
     m_Modifications:
     - target: {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 164762901}
+    - target: {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1740429218}
+    - target: {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
       propertyPath: gunSpawnPoint
       value: 
       objectReference: {fileID: 39816739}
@@ -9121,6 +9109,10 @@ PrefabInstance:
       propertyPath: projectilePrefab
       value: 
       objectReference: {fileID: 3814657112248532630, guid: 5001fb2836312be4c83c8e8d19571823, type: 3}
+    - target: {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
+      propertyPath: treasureCollider
+      value: 
+      objectReference: {fileID: 1861060296}
     - target: {fileID: 4925429565172434428, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.9318182
@@ -9183,10 +9175,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4925429565172434428, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 39816739}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5697463352070971206, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 164762902}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
 --- !u!1 &1383324083
 GameObject:
@@ -13450,6 +13439,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 2142841935}
     m_Modifications:
     - target: {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 1952364737}
+    - target: {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1740429218}
+    - target: {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
       propertyPath: gunSpawnPoint
       value: 
       objectReference: {fileID: 104064734}
@@ -13457,6 +13454,10 @@ PrefabInstance:
       propertyPath: projectilePrefab
       value: 
       objectReference: {fileID: 3814657112248532630, guid: 5001fb2836312be4c83c8e8d19571823, type: 3}
+    - target: {fileID: 1331612312765303695, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
+      propertyPath: treasureCollider
+      value: 
+      objectReference: {fileID: 2142841939}
     - target: {fileID: 4925429565172434428, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.6732283
@@ -13519,10 +13520,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4925429565172434428, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 104064734}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5697463352070971206, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1952364741}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
 --- !u!4 &1816640225 stripped
 Transform:
@@ -14110,18 +14108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 068cba2005edfed42a9f0df7f2140bfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1740429218}
-  enemy1: {fileID: 1868710798}
-  enemy2: {fileID: 164762901}
-  patrolPoints1:
-  - {fileID: 1530324719}
-  - {fileID: 364500085}
-  patrolPoints2:
-  - {fileID: 1770036845}
-  - {fileID: 1229302429}
-  moveSpeed: 2.5
-  pauseTime: 2
-  rotationSpeed: 2
+  isPlayerWithTreasure: 0
+  isPlayerInRange: 0
 --- !u!65 &1861060300
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14148,21 +14136,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4925429565172434428, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
   m_PrefabInstance: {fileID: 918503217}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1868710802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 156109945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc66457455decc14cb2ec08c21a15b81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1740429218}
-  followRange: 10
-  moveSpeed: 3
 --- !u!1001 &1890254581
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14543,21 +14516,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4925429565172434428, guid: 90c0a422daab31b468ad558060d4702e, type: 3}
   m_PrefabInstance: {fileID: 1814877658}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1952364741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1206686395}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc66457455decc14cb2ec08c21a15b81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1740429218}
-  followRange: 10
-  moveSpeed: 3
 --- !u!1 &1954246229 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7f8bb81875cef414c859c7f5f457a58a, type: 3}
@@ -15486,31 +15444,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1025681519537473006, guid: aa99a810914c5b84b9bc5d51f95dd05c, type: 3}
   m_PrefabInstance: {fileID: 1039415810}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2067569580 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8337795529860036803, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
-  m_PrefabInstance: {fileID: 1067500539}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2067569581 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8718437227229995641, guid: 437edd5c5b27f8248b3e5c8eaca85987, type: 3}
   m_PrefabInstance: {fileID: 1067500539}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2067569582
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2067569580}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc66457455decc14cb2ec08c21a15b81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1740429218}
-  followRange: 10
-  moveSpeed: 3
 --- !u!1 &2069303618
 GameObject:
   m_ObjectHideFlags: 0
@@ -16240,18 +16178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 068cba2005edfed42a9f0df7f2140bfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1740429218}
-  enemy1: {fileID: 2067569581}
-  enemy2: {fileID: 1952364737}
-  patrolPoints1:
-  - {fileID: 1825890999}
-  - {fileID: 1043188129}
-  patrolPoints2:
-  - {fileID: 1293555496}
-  - {fileID: 1246834836}
-  moveSpeed: 2.5
-  pauseTime: 2
-  rotationSpeed: 2
+  isPlayerWithTreasure: 0
+  isPlayerInRange: 0
 --- !u!4 &2143633403 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1025681519537473006, guid: aa99a810914c5b84b9bc5d51f95dd05c, type: 3}

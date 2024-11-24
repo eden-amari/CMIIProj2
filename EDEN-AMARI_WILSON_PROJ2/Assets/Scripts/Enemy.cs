@@ -1,45 +1,77 @@
 using UnityEngine;
+using System.Collections;
+
 
 public class Enemy : MonoBehaviour
 {
+    public Transform player;
+    public Transform enemy;
     private PlayerMovement playerMovement;  // Reference to the PlayerMovement script
-    public TreasureChest treasureScript;
-    public EnemyFollow enemyFollow;
-    public GameObject treasureChest;
+
+    //public TreasureChest treasureScript;
+    //public Transform treasureBox;
+    public Collider treasureCollider;
+
     public GameObject projectilePrefab;     // The projectile prefab to shoot
     public Transform gunSpawnPoint;         // The position from where the enemy shoots
     public float shootingSpeed = 10f;       // Speed of the projectile
     public float shootInterval = 2.5f;        // Interval between each shot (in seconds)
 
     private float shootCooldown = 0f;       // Timer to control when the enemy can shoot
+    public Transform[] patrolPoints;
+    private int currentPatrolIndex = 0;
+    private Vector3 originalPosition;
+
+    public float moveSpeed = 1.5f;    // Speed of the enemies' movement
+    public float pauseTime = 2f;      // Time to pause between patrol points
+
+    public float rotationSpeed = 2f;     // Speed of rotation when facing the player
 
     void Start()
     {
         playerMovement = FindFirstObjectByType<PlayerMovement>(); // Finding the PlayerMovement script
+
+        //Collider treasureCollider = GameObject.Find("Treasure").GetComponent<Collider>();
+
+        Patrol();
+
     }
 
     void Update()
     {
-        if (shootCooldown <= 0f)
+        if (treasureCollider.bounds.Contains(player.position))
         {
-            ShootAtPlayer();
-            shootCooldown = shootInterval; // Reset the cooldown timer
-        }
-        else
-        {
-            shootCooldown -= Time.deltaTime; // Decrease the cooldown timer over time
-        }
+            FollowPlayer();
 
-        if (treasureChest == null)
-        {
-            ShootAtPlayer();
-            shootCooldown = shootInterval; // Reset the cooldown timer
-            if (enemyFollow != null)
+            if (shootCooldown <= 0f)
             {
-                enemyFollow.FollowPlayer();
+                ShootAtPlayer();
+                shootCooldown = shootInterval; // Reset the cooldown timer
             }
+            else
+            {
+                shootCooldown -= Time.deltaTime; // Decrease the cooldown timer over time
+            }          
         }
+        
+
+        else if (treasureCollider == null)
+        {
+            if (shootCooldown <= 0f)
+            {
+                ShootAtPlayer();
+                shootCooldown = shootInterval; // Reset the cooldown timer
+            }
+            else
+            {
+                shootCooldown -= Time.deltaTime; // Decrease the cooldown timer over time
+            }
+            FollowPlayer();
+            
+        }
+        RotateEnemiesToFacePlayer();
     }
+
     public void ShootAtPlayer()
     {
         if (playerMovement != null)
@@ -103,6 +135,57 @@ public class Enemy : MonoBehaviour
 
         return projectile;
     }
+
+    void FollowPlayer()
+    {
+        Vector3 direction1 = player.position - enemy.position;
+        direction1.y = 0; // Keep on the same height level
+        enemy.position += direction1.normalized * moveSpeed * Time.deltaTime;
+    }
+    void Patrol()
+    {
+        if (patrolPoints.Length > 0)
+        {
+            StartCoroutine(PatrolEnemy(enemy, patrolPoints, currentPatrolIndex));
+        }
+    }
+
+    // Coroutine to handle patrol behavior with pauses and rotation for each enemy
+    IEnumerator PatrolEnemy(Transform enemy, Transform[] patrolPoints, int currentPatrolIndex)
+    {
+        while (true)
+        {
+            Transform targetPatrolPoint = patrolPoints[currentPatrolIndex];
+
+            // Move towards the current patrol point
+            while (Vector3.Distance(enemy.position, targetPatrolPoint.position) > 0.1f)
+            {
+                Vector3 direction = targetPatrolPoint.position - enemy.position;
+                direction.y = 0; // Keep the guard on the same height level
+                enemy.position += direction.normalized * moveSpeed * Time.deltaTime;
+                yield return null;
+            }
+
+            // Wait for the pause time before continuing to the next patrol point
+            yield return new WaitForSeconds(pauseTime);
+
+            // Rotate the enemy 90 degrees after the pause
+            enemy.Rotate(0f, 180f, 0f); // Rotate 90 degrees along the Y-axis
+
+            // After pause and rotation, switch to the next patrol point
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+        }
+    }
+
+    void RotateEnemiesToFacePlayer()
+    {
+        Vector3 direction1 = player.position - enemy.position;
+        direction1.y = 0; // Ignore vertical component (y-axis)
+        Quaternion targetRotation1 = Quaternion.LookRotation(direction1);
+        enemy.rotation = Quaternion.Slerp(enemy.rotation, targetRotation1, rotationSpeed * Time.deltaTime);
+     }
+
+      
 }
 
 
