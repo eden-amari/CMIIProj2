@@ -13,10 +13,11 @@ TagManager:
   - Gun
   - GrenadeLauncher
   - BulletPrefab
-  - Bullet
-  - CinemachineTarget
   - healthPack
-  - ammoBox
+  - gunAmmo
+  - CinemachineTarget
+  - enemyBullet
+  - playerBullet
   layers:
   - Default
   - TransparentFX

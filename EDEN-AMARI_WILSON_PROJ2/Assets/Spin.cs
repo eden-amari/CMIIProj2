@@ -14,15 +14,17 @@ public class Spin : MonoBehaviour
     {
         if ((this.tag == "healthPack"))
         {
-            Vector3 rotationToAdd = new Vector3(0, 0, .3f);
+            Vector3 rotationToAdd = new Vector3(0, .3f, 0);
             transform.Rotate(rotationToAdd);
         }
 
-        else if (this.tag == "ammoBox")
+        else if (this.tag == "gunAmmo")
         {
-            Vector3 rotationToAdd = new Vector3(0, .25f, 0);
+            Vector3 rotationToAdd = new Vector3(0, .25f, .25f);
             transform.Rotate(rotationToAdd);
         }
+
+      
 
         else if (this.tag == "GrenadePrefab")
         {

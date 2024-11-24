@@ -181,7 +181,7 @@ public class Weapon : MonoBehaviour
         }
 
         // Optionally, destroy the projectile after a delay, for example, after 5 seconds
-        Destroy(projectile, 2f); // Destroy the projectile after 5 seconds
+        Destroy(projectile, 1f); // Destroy the projectile after 5 seconds
 
         // No need for a return here, since the method is void.
     }

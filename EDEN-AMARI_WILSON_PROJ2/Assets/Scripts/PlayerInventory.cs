@@ -6,7 +6,7 @@ public class PlayerInventory : MonoBehaviour
     //public List<TreasureBox> collectedTreasureBoxes = new List<TreasureBox>();
     public List<Weapon> collectedWeapons = new List<Weapon>(); // List to store weapons
     public Weapon currentWeapon; // Track the currently equipped weapon
-    public int lives = 3; // Player lives
+    
 
     private int currentWeaponIndex = -1; // Track the index of the currently equipped weapon
 
@@ -101,15 +101,8 @@ public class PlayerInventory : MonoBehaviour
         EquipWeapon(collectedWeapons[currentWeaponIndex]);
     }
 
-    public void LoseLife()
-    {
-        lives--;
-        if (lives <= 0)
-        {
-            Debug.Log("Game Over!");
-            // Implement game over logic here
-        }
-    }
+    
+    
 }
 
 

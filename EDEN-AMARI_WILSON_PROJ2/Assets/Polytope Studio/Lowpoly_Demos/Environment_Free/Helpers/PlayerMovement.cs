@@ -28,10 +28,13 @@ public class PlayerMovement : MonoBehaviour
     public TextMeshProUGUI enemiesDefeatedText;
     public TextMeshProUGUI enemiesLeftText;
 
+    public TextMeshProUGUI livesText;
+    public int lives = 3; // Player lives
     // Jumping variables
     public float jumpForce = 5f;
     private bool isGrounded;
 
+    
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -55,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
 
         UpdateEnemyText();
         UpdateTreasureText();
+        UpdateLifeText();
 
         // Make sure the Rigidbody is not kinematic and gravity is enabled
         if (rb != null)
@@ -81,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Move()
-    { 
+    {
 
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
@@ -154,6 +158,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void UpdateLifeText()
+    {
+        if (livesText != null)
+        {
+            livesText.text = "Lives left: " + lives;
+        }
+    }
+
     // Check for collision to determine if the player is grounded
     private void OnCollisionEnter(Collision collision)
     {
@@ -210,12 +222,41 @@ public class PlayerMovement : MonoBehaviour
             UpdateTreasureText();
             Destroy(collision.gameObject);
         }
-        
-        else if (collision.gameObject.CompareTag("ammoBox"))
+
+        else if (collision.gameObject.CompareTag("gunAmmo"))
         {
             Destroy(collision.gameObject);
             weapon.bulletCount += 5;
             weapon.UpdateBulletCountText();
+        }
+
+        else if (collision.gameObject.CompareTag("enemyBullet"))
+        {
+            lives--;
+            UpdateLifeText();
+        }
+        else if (collision.gameObject.CompareTag("healthPack"))
+        {
+            if ((lives>=1) && (lives<3))
+            {
+                Destroy(collision.gameObject);
+                lives++;
+                UpdateLifeText();
+            }
+            
+            else if (lives==3)
+            {
+                Debug.Log("You already have the max lives!");
+            }
+        }
+    }
+
+    public void LoseLife()
+    {
+        if (lives <= 0)
+        {
+            Debug.Log("Game Over!");
+            // Implement game over logic here
         }
     }
 }

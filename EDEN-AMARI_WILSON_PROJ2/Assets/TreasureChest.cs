@@ -1,245 +1,350 @@
 using UnityEngine;
+using System.Collections; // Required for coroutines
 
 public class TreasureChest : MonoBehaviour
 {
     public Transform player;          // Reference to the player
-    public Transform enemy;           // Reference to the first enemy
+    public Transform enemy1;          // Reference to the first enemy
     public Transform enemy2;          // Reference to the second enemy
-    private bool isPlayerInRange = false; // Whether the player is inside the treasure chest collider
+    public Transform[] patrolPoints1; // Patrol points for enemy1
+    public Transform[] patrolPoints2; // Patrol points for enemy2
 
-    public float moveSpeed = 2.5f;     // How fast the enemy moves towards the player
-    private Vector3 originalPosition; // The enemy's original position to return to
+    public float moveSpeed = 1.5f;    // Speed of the enemies' movement
+    public float pauseTime = 2f;      // Time to pause between patrol points
+    private bool isPlayerInRange = false; // Whether the player is inside the treasure chest's collider
+    private bool isPlayerWithTreasure = false; // Whether the player has picked up the treasure
+    private int currentPatrolIndex1 = 0;  // Current patrol point index for enemy1
+    private int currentPatrolIndex2 = 0;  // Current patrol point index for enemy2
+    private Vector3 originalPosition1; // The first enemy's original position to return to
     private Vector3 originalPosition2; // The second enemy's original position to return to
-
     private SphereCollider chestCollider; // The collider for the treasure chest
+    private bool isPatrolling1 = false;  // Whether enemy1 is patrolling
+    private bool isPatrolling2 = false;  // Whether enemy2 is patrolling
+    public float rotationSpeed = 2f;     // Speed of rotation when facing the player
+    private Enemy enemyScript;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Get the SphereCollider attached to the treasure chest
         chestCollider = GetComponent<SphereCollider>();
 
-        // Check if there's a SphereCollider attached to this GameObject
         if (chestCollider == null)
         {
             Debug.LogError("Treasure chest does not have a SphereCollider!");
         }
 
-        // Initialize original position of the enemies
-        if (enemy != null)
+        if (enemy1 != null)
         {
-            originalPosition = enemy.position; // Store the first enemy's original position
+            originalPosition1 = enemy1.position;
         }
 
         if (enemy2 != null)
         {
-            originalPosition2 = enemy2.position; // Store the second enemy's original position
+            originalPosition2 = enemy2.position;
+        }
+
+        if (patrolPoints1.Length == 0 || patrolPoints2.Length == 0)
+        {
+            Debug.LogError("Patrol points for one or both enemies are not assigned!");
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        // If the player is within the range, move the enemies toward the player
-        if (isPlayerInRange)
+        if (!isPlayerInRange)
         {
+            Patrol();
+        }
+
+        if (isPlayerWithTreasure || isPlayerInRange)
+        {
+            // Rotate enemies to face the player
+            RotateEnemiesToFacePlayer();
+
+            // Move enemies towards the player
             FollowPlayer();
+
+            // Optionally, shoot at the player if enemies have the shooting capability
+            if (enemyScript != null)
+            {
+                enemyScript.ShootAtPlayer();
+            }
         }
         else
         {
-            ReturnEnemiesToOriginalPosition();
+            // Patrol when the player is not in range and hasn't picked up the treasure
+            Patrol();
         }
     }
 
-    // Called when the player enters the treasure chest's collider
     private void OnTriggerEnter(Collider other)
     {
-        // Check if the player enters the range of the treasure chest
-        if (other.CompareTag("Player")) // Ensure it is the player
+        if (other.CompareTag("Player"))
         {
-            // Player is inside the treasure chest's radius
             isPlayerInRange = true;
             Debug.Log("Player entered the range of the treasure chest.");
         }
     }
 
-    // Called when the player exits the treasure chest's collider
     private void OnTriggerExit(Collider other)
     {
-        // Check if the player leaves the range of the treasure chest
-        if (other.CompareTag("Player")) // Ensure it is the player
+        if (other.CompareTag("Player"))
         {
-            // Player left the range of the treasure chest
             isPlayerInRange = false;
             Debug.Log("Player exited the range of the treasure chest.");
+        }
+    }
+
+    // Call this function when the player picks up the treasure
+    public void PlayerPickedUpTreasure()
+    {
+        isPlayerWithTreasure = true; // Player has picked up the treasure
+        Debug.Log("Player picked up the treasure.");
+    }
+
+    // Rotate the enemies to face the player
+    void RotateEnemiesToFacePlayer()
+    {
+        if (enemy1 != null && player != null)
+        {
+            Vector3 direction1 = player.position - enemy1.position;
+            direction1.y = 0; // Ignore vertical component (y-axis)
+            Quaternion targetRotation1 = Quaternion.LookRotation(direction1);
+            enemy1.rotation = Quaternion.Slerp(enemy1.rotation, targetRotation1, rotationSpeed * Time.deltaTime);
+        }
+
+        if (enemy2 != null && player != null)
+        {
+            Vector3 direction2 = player.position - enemy2.position;
+            direction2.y = 0; // Ignore vertical component (y-axis)
+            Quaternion targetRotation2 = Quaternion.LookRotation(direction2);
+            enemy2.rotation = Quaternion.Slerp(enemy2.rotation, targetRotation2, rotationSpeed * Time.deltaTime);
         }
     }
 
     // Function to move both enemies towards the player
     void FollowPlayer()
     {
-        if (enemy != null && player != null)
+            Vector3 direction1 = player.position - enemy1.position;
+            direction1.y = 0; // Keep on the same height level
+            enemy1.position += direction1.normalized * moveSpeed * Time.deltaTime;
+        
+            Vector3 direction2 = player.position - enemy2.position;
+            direction2.y = 0;
+            enemy2.position += direction2.normalized * moveSpeed * Time.deltaTime;     
+    }
+
+    // Function to patrol the guards between waypoints
+    void Patrol()
+    {
+        if (enemy1 != null && patrolPoints1.Length > 0 && !isPatrolling1)
         {
-            // Calculate the direction to the player for the first enemy
-            Vector3 direction1 = player.position - enemy.position;
-            direction1.y = 0; // Keep the first enemy on the same height level
-            enemy.position += direction1.normalized * moveSpeed * Time.deltaTime; // Move towards the player
+            isPatrolling1 = true;
+            StartCoroutine(PatrolEnemy(enemy1, patrolPoints1, currentPatrolIndex1));
         }
 
-        if (enemy2 != null && player != null)
+        if (enemy2 != null && patrolPoints2.Length > 0 && !isPatrolling2)
         {
-            // Calculate the direction to the player for the second enemy
-            Vector3 direction2 = player.position - enemy2.position;
-            direction2.y = 0; // Keep the second enemy on the same height level
-            enemy2.position += direction2.normalized * moveSpeed * Time.deltaTime; // Move towards the player
+            isPatrolling2 = true;
+            StartCoroutine(PatrolEnemy(enemy2, patrolPoints2, currentPatrolIndex2));
         }
     }
 
-    // Function to return both enemies to their original positions when the player leaves the range
-    void ReturnEnemiesToOriginalPosition()
+    // Coroutine to handle patrol behavior with pauses and rotation for each enemy
+    IEnumerator PatrolEnemy(Transform enemy, Transform[] patrolPoints, int currentPatrolIndex)
     {
-        if (enemy != null)
+        while (true)
         {
-            // Calculate the direction to return to the original position for the first enemy
-            Vector3 direction1 = originalPosition - enemy.position;
-            direction1.y = 0; // Keep the first enemy on the same height level
-            enemy.position += direction1.normalized * moveSpeed * Time.deltaTime; // Move back to the original position
+            Transform targetPatrolPoint = patrolPoints[currentPatrolIndex];
 
-            // Stop moving when close to the original position for the first enemy
-            if (Vector3.Distance(enemy.position, originalPosition) < 0.1f)
+            // Move towards the current patrol point
+            while (Vector3.Distance(enemy.position, targetPatrolPoint.position) > 0.1f)
             {
-                enemy.position = originalPosition; // Snap to the original position
+                Vector3 direction = targetPatrolPoint.position - enemy.position;
+                direction.y = 0; // Keep the guard on the same height level
+                enemy.position += direction.normalized * moveSpeed * Time.deltaTime;
+                yield return null;
             }
-        }
 
-        if (enemy2 != null)
-        {
-            // Calculate the direction to return to the original position for the second enemy
-            Vector3 direction2 = originalPosition2 - enemy2.position;
-            direction2.y = 0; // Keep the second enemy on the same height level
-            enemy2.position += direction2.normalized * moveSpeed * Time.deltaTime; // Move back to the original position
+            // Wait for the pause time before continuing to the next patrol point
+            yield return new WaitForSeconds(pauseTime);
 
-            // Stop moving when close to the original position for the second enemy
-            if (Vector3.Distance(enemy2.position, originalPosition2) < 0.1f)
-            {
-                enemy2.position = originalPosition2; // Snap to the original position
-            }
+            // Rotate the enemy 90 degrees after the pause
+            enemy.Rotate(0f, 180f, 0f); // Rotate 90 degrees along the Y-axis
+
+            // After pause and rotation, switch to the next patrol point
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
         }
     }
 }
 
 
 //using UnityEngine;
+//using System.Collections; // Required for coroutines
+
+
 
 //public class TreasureChest : MonoBehaviour
 //{
-
 //    public Transform player;          // Reference to the player
-//    public Transform enemy;           // Reference to the enemy that will follow the player
-//    public Transform enemy2;
-//    private bool isPlayerInRange = false; // Whether the player is inside the treasure chest collider
-
-//    public float moveSpeed = 2.5f;     // How fast the enemy moves towards the player
-//    private Vector3 originalPosition; // The enemy's original position to return to
-//    private Vector3 originalPosition2; // The enemy's original position to return to
-
+//    public Transform enemy1;          // Reference to the first enemy
+//    public Transform enemy2;          // Reference to the second enemy
+//    public Transform[] patrolPoints1; // Patrol points for enemy1
+//    public Transform[] patrolPoints2; // Patrol points for enemy2
+//    public float moveSpeed = 2.5f;    // Speed of the enemies' movement
+//    public float pauseTime = 2f;      // Time to pause between patrol points
+//    private bool isPlayerInRange = false; // Whether the player is inside the treasure chest's collider
+//    private int currentPatrolIndex1 = 0;  // Current patrol point index for enemy1
+//    private int currentPatrolIndex2 = 0;  // Current patrol point index for enemy2
+//    private Vector3 originalPosition1; // The first enemy's original position to return to
+//    private Vector3 originalPosition2; // The second enemy's original position to return to
 //    private SphereCollider chestCollider; // The collider for the treasure chest
-
+//    private bool isPatrolling1 = false;  // Whether enemy1 is patrolling
+//    private bool isPatrolling2 = false;  // Whether enemy2 is patrolling
+//    public float rotationSpeed = 2f;     // Speed of rotation when facing the player
+//    private Enemy enemyScript;
 //    // Start is called before the first frame update
 //    void Start()
 //    {
-//        // Get the SphereCollider attached to the treasure chest
 //        chestCollider = GetComponent<SphereCollider>();
 
-//        // Check if there's a SphereCollider attached to this GameObject
 //        if (chestCollider == null)
 //        {
 //            Debug.LogError("Treasure chest does not have a SphereCollider!");
 //        }
 
-//        // Initialize original position of the enemy
-//        if (enemy != null)
+//        if (enemy1 != null)
 //        {
-//            originalPosition = enemy.position; // Store the enemy's original position
+//            originalPosition1 = enemy1.position;
 //        }
 
-//        if (enemy2 != null) 
+//        if (enemy2 != null)
 //        {
-//            originalPosition2 = enemy2.position; // Store the enemy's original position
+//            originalPosition2 = enemy2.position;
+//        }
+
+//        if (patrolPoints1.Length == 0 || patrolPoints2.Length == 0)
+//        {
+//            Debug.LogError("Patrol points for one or both enemies are not assigned!");
 //        }
 //    }
 
 //    // Update is called once per frame
 //    void Update()
 //    {
-//        // If the player is within the range, move the enemy toward the player
 //        if (isPlayerInRange)
 //        {
+//            // Rotate enemies to face the player
+//            RotateEnemiesToFacePlayer();
+
+//            // Move enemies towards the player
 //            FollowPlayer();
+//            enemyScript.ShootAtPlayer();
 //        }
 //        else
 //        {
-//            ReturnEnemyToOriginalPosition();
+//            // Patrol when the player is not in range
+//            Patrol();
 //        }
 //    }
 
-//    // Called when the player enters the treasure chest's collider
 //    private void OnTriggerEnter(Collider other)
 //    {
-//        // Check if the player enters the range of the treasure chest
-//        if (other.CompareTag("Player")) // Ensure it is the player
+//        if (other.CompareTag("Player"))
 //        {
-//            // Player is inside the treasure chest's radius
 //            isPlayerInRange = true;
 //            Debug.Log("Player entered the range of the treasure chest.");
 //        }
 //    }
 
-//    // Called when the player exits the treasure chest's collider
 //    private void OnTriggerExit(Collider other)
 //    {
-//        // Check if the player leaves the range of the treasure chest
-//        if (other.CompareTag("Player")) // Ensure it is the player
+//        if (other.CompareTag("Player"))
 //        {
-//            // Player left the range of the treasure chest
 //            isPlayerInRange = false;
 //            Debug.Log("Player exited the range of the treasure chest.");
 //        }
 //    }
 
-//    // Function to move the enemy towards the player
-//    void FollowPlayer()
+//    // Rotate the enemies to face the player
+//    void RotateEnemiesToFacePlayer()
 //    {
-//        if (enemy == null || player == null) return;
+//        if (enemy1 != null && player != null)
+//        {
+//            Vector3 direction1 = player.position - enemy1.position;
+//            direction1.y = 0; // Ignore vertical component (y-axis)
+//            Quaternion targetRotation1 = Quaternion.LookRotation(direction1);
+//            enemy1.rotation = Quaternion.Slerp(enemy1.rotation, targetRotation1, rotationSpeed * Time.deltaTime);
+//        }
 
-//        // Calculate the direction to the player
-//        Vector3 direction = player.position - enemy.position;
-
-//        // Optionally, keep the enemy on the same height level as the player
-//        direction.y = 0;
-
-//        // Normalize the direction and move towards the player
-//        enemy.position += direction.normalized * moveSpeed * Time.deltaTime;
+//        if (enemy2 != null && player != null)
+//        {
+//            Vector3 direction2 = player.position - enemy2.position;
+//            direction2.y = 0; // Ignore vertical component (y-axis)
+//            Quaternion targetRotation2 = Quaternion.LookRotation(direction2);
+//            enemy2.rotation = Quaternion.Slerp(enemy2.rotation, targetRotation2, rotationSpeed * Time.deltaTime);
+//        }
 //    }
 
-//    // Function to return the enemy to its original position when the player leaves the range
-//    void ReturnEnemyToOriginalPosition()
+//    // Function to move both enemies towards the player
+//    void FollowPlayer()
 //    {
-//        if (enemy == null) return;
-
-//        // Calculate the direction to return to the original position
-//        Vector3 direction = originalPosition - enemy.position;
-
-//        // Optionally, keep the enemy on the same height level
-//        direction.y = 0;
-
-//        // Normalize the direction and move towards the original position
-//        enemy.position += direction.normalized * moveSpeed * Time.deltaTime;
-
-//        // Stop moving when close to the original position
-//        if (Vector3.Distance(enemy.position, originalPosition) < 0.1f)
+//        if (enemy1 != null && player != null)
 //        {
-//            enemy.position = originalPosition; // Snap to the original position
+//            Vector3 direction1 = player.position - enemy1.position;
+//            direction1.y = 0; // Keep on the same height level
+//            enemy1.position += direction1.normalized * moveSpeed * Time.deltaTime;
+//        }
+
+//        if (enemy2 != null && player != null)
+//        {
+//            Vector3 direction2 = player.position - enemy2.position;
+//            direction2.y = 0;
+//            enemy2.position += direction2.normalized * moveSpeed * Time.deltaTime;
+//        }
+//    }
+
+//    // Function to patrol the guards between waypoints
+//    void Patrol()
+//    {
+//        if (enemy1 != null && patrolPoints1.Length > 0 && !isPatrolling1)
+//        {
+//            isPatrolling1 = true;
+//            StartCoroutine(PatrolEnemy(enemy1, patrolPoints1, currentPatrolIndex1));
+//        }
+
+//        if (enemy2 != null && patrolPoints2.Length > 0 && !isPatrolling2)
+//        {
+//            isPatrolling2 = true;
+//            StartCoroutine(PatrolEnemy(enemy2, patrolPoints2, currentPatrolIndex2));
+//        }
+//    }
+
+//    // Coroutine to handle patrol behavior with pauses and rotation for each enemy
+//    IEnumerator PatrolEnemy(Transform enemy, Transform[] patrolPoints, int currentPatrolIndex)
+//    {
+//        while (true)
+//        {
+//            Transform targetPatrolPoint = patrolPoints[currentPatrolIndex];
+
+//            // Move towards the current patrol point
+//            while (Vector3.Distance(enemy.position, targetPatrolPoint.position) > 0.1f)
+//            {
+//                Vector3 direction = targetPatrolPoint.position - enemy.position;
+//                direction.y = 0; // Keep the guard on the same height level
+//                enemy.position += direction.normalized * moveSpeed * Time.deltaTime;
+//                yield return null;
+//            }
+
+//            // Wait for the pause time before continuing to the next patrol point
+//            yield return new WaitForSeconds(pauseTime);
+
+//            // Rotate the enemy 90 degrees after the pause
+//            enemy.Rotate(0f, 180f, 0f); // Rotate 90 degrees along the Y-axis
+
+//            // After pause and rotation, switch to the next patrol point
+//            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
 //        }
 //    }
 //}

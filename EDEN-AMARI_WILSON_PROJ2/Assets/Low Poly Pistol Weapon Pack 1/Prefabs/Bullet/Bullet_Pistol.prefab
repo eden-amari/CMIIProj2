@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2973721961179640438}
   m_Layer: 0
   m_Name: Bullet_Pistol
-  m_TagString: Bullet
+  m_TagString: playerBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fb97b9572d9b0459e8904b4c52231a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 3
+  despawnTimer: 0.4
 --- !u!54 &467266038286052778
 Rigidbody:
   m_ObjectHideFlags: 0
