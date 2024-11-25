@@ -7160,67 +7160,6 @@ Transform:
   - {fileID: 1627979680}
   m_Father: {fileID: 1383324084}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!1001 &1094787530
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 11.351643
-      objectReference: {fileID: 0}
-    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.92
-      objectReference: {fileID: 0}
-    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -8.256321
-      objectReference: {fileID: 0}
-    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8068048788960346830, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
-      propertyPath: m_Name
-      value: PickUpBullet
-      objectReference: {fileID: 0}
-    - target: {fileID: 8068048788960346830, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
-      propertyPath: m_TagString
-      value: gunAmmo
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
 --- !u!4 &1096127568 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8718778828885884488, guid: e5f4daf24146ee040b5a2d7a73b30aa0, type: 3}
@@ -7784,6 +7723,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1025681519537473006, guid: aa99a810914c5b84b9bc5d51f95dd05c, type: 3}
   m_PrefabInstance: {fileID: 1522901619}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1172229824
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.7010274
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -12.295476
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258860369566816372, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8068048788960346830, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
+      propertyPath: m_Name
+      value: PickUpBullet
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2ab2e08f9f007764799d0f4916a53482, type: 3}
 --- !u!4 &1180345206 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1025681519537473006, guid: aa99a810914c5b84b9bc5d51f95dd05c, type: 3}
@@ -9209,7 +9205,7 @@ MonoBehaviour:
   maxLaunchHeight: 1.5
   mainCamera: {fileID: 2069303620}
   launchDuration: 2
-  grenadeCount: 12
+  grenadeCount: 1
   bulletCountText: {fileID: 0}
   grenadeCountText: {fileID: 1442796801}
 --- !u!65 &1386367417
@@ -12647,7 +12643,6 @@ MonoBehaviour:
   moveSpeed: 5
   runSpeedMultiplier: 2
   mouseSensitivity: 2
-  weapon: {fileID: 0}
   treasureCount: 0
   treasureLeft: 3
   enemiesLeft: 6
@@ -16212,4 +16207,4 @@ SceneRoots:
   - {fileID: 1101030112}
   - {fileID: 1635283693}
   - {fileID: 1431745719}
-  - {fileID: 1094787530}
+  - {fileID: 1172229824}

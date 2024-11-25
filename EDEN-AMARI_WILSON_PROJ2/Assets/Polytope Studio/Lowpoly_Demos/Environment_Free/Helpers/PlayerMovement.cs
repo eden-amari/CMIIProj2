@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float xRotation = 0f;
     private PlayerInventory inventory;
-    public Weapon weapon; // Reference to the Weapon component
+    private Weapon weapon; // Reference to the Weapon component
 
     public int treasureCount = 0;
     public int treasureLeft = 3;
@@ -50,11 +50,11 @@ public class PlayerMovement : MonoBehaviour
 
         
 
-        // Check if weapon is found
-        if (weapon == null)
-        {
-            Debug.LogError("Weapon component could not be found in the scene!");
-        }
+        //// Check if weapon is found
+        //if (weapon == null)
+        //{
+        //    Debug.LogError("Weapon component could not be found in the scene!");
+        //}
 
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -176,11 +176,13 @@ public class PlayerMovement : MonoBehaviour
         healthPack.SetActive(true);
     }
 
-    private IEnumerator RespawnBullets(GameObject bullet, float delay)
+    public IEnumerator RespawnBullets(GameObject bullet, float delay)
     {
         yield return new WaitForSeconds(delay);
         bullet.SetActive(true);
     }
+
+
 
 
 
@@ -233,6 +235,20 @@ public class PlayerMovement : MonoBehaviour
             }
             Destroy(collision.gameObject); // Destroy the grenade
         }
+
+        else if (collision.gameObject.CompareTag("gunAmmo"))
+        {
+            if (weapon != null)
+            {
+                weapon.bulletCount++; // Increment the grenade count
+                weapon.UpdateBulletCountText(); // Update the grenade UI count if needed
+            }
+            collision.gameObject.SetActive(false); // Destroy the grenade
+            StartCoroutine(RespawnBullets(collision.gameObject, 3f));
+        }
+
+
+
         else if (collision.gameObject.CompareTag("Treasure"))
         {
             treasureCount++;
@@ -241,25 +257,8 @@ public class PlayerMovement : MonoBehaviour
             Destroy(collision.gameObject);
         }
 
-        else if (collision.gameObject.CompareTag("gunAmmo"))
-        {
-            Debug.Log("Ammo collision detected");
-            if (weapon.bulletCount < 6)
-            {
-                
-                collision.gameObject.SetActive(false);
-                weapon.bulletCount++;
-                weapon.UpdateBulletCountText();
-                Debug.Log("Bullet count increased to: " + weapon.bulletCount);
-                
-                StartCoroutine(RespawnBullets(collision.gameObject, 3f));
-            }
-
-            else if (weapon.bulletCount == 6)
-            {
-                Debug.Log("You can only hold 6 bullets!");
-            }
-        }
+        
+  
 
         //else if (collision.gameObject.CompareTag("enemyBullet"))
         //{

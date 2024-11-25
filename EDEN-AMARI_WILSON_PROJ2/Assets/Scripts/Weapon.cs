@@ -8,7 +8,7 @@ public class Weapon : MonoBehaviour
     public Transform bulletSpawnPoint; // The point where the bullet spawns
     public GameObject bulletPrefab; // The bullet prefab
     public float bulletSpeed = 30f; // Speed of the bullet
-    public int bulletCount = 1; // Initial bullet count
+    public int bulletCount = 6; // Initial bullet count
 
     // Grenade variables
     public Transform launchPoint; // The point from where the grenade will be launched
