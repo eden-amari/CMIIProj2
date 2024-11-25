@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded;
 
     
-    private void Start()
+    public void Start()
     {
         rb = GetComponent<Rigidbody>();
         inventory = GetComponent<PlayerInventory>();

@@ -42,8 +42,31 @@ public class Enemy : MonoBehaviour
         }
 
         // Check if the player is inside the treasure collider or the treasure box is destroyed
-        if ((treasureCollider != null && treasureCollider.bounds.Contains(player.position)) || isTreasureBoxDestroyed)
+        if (treasureCollider != null && treasureCollider.bounds.Contains(player.position))
         {
+            FollowPlayer();
+            RotateEnemiesToFacePlayer();
+            if (shootCooldown <= 0f)
+            {
+                ShootAtPlayer();
+                shootCooldown = shootInterval;  // Reset the cooldown timer
+            }
+            else
+            {
+                shootCooldown -= Time.deltaTime;  // Decrease the cooldown timer over time
+            }
+
+            // Stop patrolling when we're following the player
+            if (isPatrolling)
+            {
+                StopCoroutine("PatrolEnemy"); // Stop patrolling when we're following the player
+                isPatrolling = false;
+            }
+        }
+
+        else if (isTreasureBoxDestroyed)
+        {
+            moveSpeed = 3f;
             FollowPlayer();
             RotateEnemiesToFacePlayer();
             if (shootCooldown <= 0f)

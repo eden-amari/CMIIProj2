@@ -26,7 +26,7 @@ public class Weapon : MonoBehaviour
     public TextMeshProUGUI bulletCountText; // Reference to the TextMeshProUGUI component
     public TextMeshProUGUI grenadeCountText; // Reference to the grenade count text
 
-    private void Start()
+    public void Start()
     {
         // Get the PlayerInventory component attached to the player
         playerInventory = FindFirstObjectByType<PlayerInventory>();
