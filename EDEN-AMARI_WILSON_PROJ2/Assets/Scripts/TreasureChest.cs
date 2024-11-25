@@ -8,10 +8,7 @@ public class TreasureChest : MonoBehaviour
 
 
     public bool isPlayerInRange;
-    private int currentPatrolIndex1 = 0;  // Current patrol point index for enemy1
-    private int currentPatrolIndex2 = 0;  // Current patrol point index for enemy2
-    private Vector3 originalPosition1; // The first enemy's original position to return to
-    private Vector3 originalPosition2; // The second enemy's original position to return to
+   
     private SphereCollider chestCollider; // The collider for the treasure chest
    
    
@@ -27,20 +24,7 @@ public class TreasureChest : MonoBehaviour
             Debug.LogError("Treasure chest does not have a SphereCollider!");
         }
 
-        //if (enemy1 != null)
-        //{
-        //    originalPosition1 = enemy1.position;
-        //}
-
-        //if (enemy2 != null)
-        //{
-        //    originalPosition2 = enemy2.position;
-        //}
-
-        //if (patrolPoints1.Length == 0 || patrolPoints2.Length == 0)
-        //{
-        //    Debug.LogError("Patrol points for one or both enemies are not assigned!");
-        //}
+      
     }
 
     // Update is called once per frame

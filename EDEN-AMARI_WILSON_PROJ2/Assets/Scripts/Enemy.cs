@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
 
     public GameObject projectilePrefab;  // The projectile prefab to shoot
     public Transform gunSpawnPoint;  // The position from where the enemy shoots
-    public float shootingSpeed = 10f;  // Speed of the projectile
+    public float shootingSpeed = 13f;  // Speed of the projectile
     public float shootInterval = 2.5f;  // Interval between each shot (in seconds)
 
     private float shootCooldown = 0f;  // Timer to control when the enemy can shoot
@@ -24,6 +24,9 @@ public class Enemy : MonoBehaviour
     public float rotationSpeed = 2f;  // Speed of rotation when facing the player
     private bool isTreasureBoxDestroyed = false;
     private bool isPatrolling = false; // A flag to track whether the enemy is patrolling
+    private Vector3 originalPosition;
+
+    public int enemyHealth = 3;
 
     void Start()
     {
@@ -65,9 +68,15 @@ public class Enemy : MonoBehaviour
             // Start patrolling if not already patrolling
             if (!isPatrolling)
             {
+               //transform.position = originalPosition;   
                 isPatrolling = true;
                 StartCoroutine(PatrolEnemy(enemy, patrolPoints, currentPatrolIndex));  // Start patrolling if not following the player
             }
+        }
+
+        if (playerMovement.treasureLeft == 0)
+        {
+            RunAway();
         }
     }
 
@@ -144,9 +153,18 @@ public class Enemy : MonoBehaviour
     void FollowPlayer()
     {
         Vector3 direction = player.position - enemy.position;
-        direction.y = 0;  // Keep the enemy at the same height level
+        direction.y = 0; 
         enemy.position += direction.normalized * moveSpeed * Time.deltaTime;
     }
+
+    void RunAway()
+    {
+      
+        Vector3 direction = enemy.position - player.position;
+        direction.y = 0;  
+        enemy.position += direction.normalized * moveSpeed * Time.deltaTime;
+    }
+
 
     // Function to rotate the enemy to face the player
     void RotateEnemiesToFacePlayer()
@@ -177,6 +195,27 @@ public class Enemy : MonoBehaviour
                 isPatrolling = true;
                 StartCoroutine(PatrolEnemy(enemy, patrolPoints, currentPatrolIndex));
             }
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        // Check if the collided object has the "Enemy" tag
+        if ((collision.gameObject.CompareTag("playerBullet")) && (enemyHealth > 1))
+        {
+            enemyHealth--;
+            // Destroy the enemy object
+            Destroy(collision.gameObject);
+        }
+
+        else if ((collision.gameObject.CompareTag("playerBullet")) && (enemyHealth == 1))
+        {
+            Destroy(gameObject);
+        }
+
+        else if (collision.gameObject.CompareTag("Grenade")) 
+        {
+            Destroy(gameObject);
         }
     }
 }

@@ -8,7 +8,7 @@ public class Weapon : MonoBehaviour
     public Transform bulletSpawnPoint; // The point where the bullet spawns
     public GameObject bulletPrefab; // The bullet prefab
     public float bulletSpeed = 30f; // Speed of the bullet
-    public int bulletCount = 6; // Initial bullet count
+    public int bulletCount = 1; // Initial bullet count
 
     // Grenade variables
     public Transform launchPoint; // The point from where the grenade will be launched
@@ -17,7 +17,7 @@ public class Weapon : MonoBehaviour
     public float maxLaunchHeight = 1.5f; // Maximum height of the arc
     public Camera mainCamera; // Reference to the main camera
     public float launchDuration = 2f; // Duration of the launch
-    public int grenadeCount = 0; // Initial grenade count
+    public int grenadeCount = 1; // Initial grenade count
 
     private PlayerInventory playerInventory; // Reference to the player's inventory
     //private bool isLaunching = false; // To prevent multiple grenade launches
@@ -36,13 +36,13 @@ public class Weapon : MonoBehaviour
 
     private void Update()
     {
-        if ((playerInventory.currentWeapon != this) && (this.tag == "Gun"))
+        if ((playerInventory.collectedWeapons.Contains(this) == false) && (this.tag == "Gun"))
         {
             Vector3 rotationToAdd = new Vector3(0, 0, .5f);
             transform.Rotate(rotationToAdd);
         }
 
-        else if ((playerInventory.currentWeapon != this) && (this.tag == "GrenadeLauncher"))
+        else if ((playerInventory.collectedWeapons.Contains(this) == false) && (this.tag == "GrenadeLauncher"))
         {
             Vector3 rotationToAdd = new Vector3(0, .5f, 0);
             transform.Rotate(rotationToAdd);

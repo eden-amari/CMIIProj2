@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4738566387962895674, guid: 12ec307e4794d5343818153e0717ee71, type: 3}
+      propertyPath: despawnTimer
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 1622716105877373041, guid: 12ec307e4794d5343818153e0717ee71, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -14,12 +14,12 @@ public class PlayerMovement : MonoBehaviour
 
     private float xRotation = 0f;
     private PlayerInventory inventory;
-    private Weapon weapon; // Reference to the Weapon component
+    public Weapon weapon; // Reference to the Weapon component
 
     public int treasureCount = 0;
     public int treasureLeft = 3;
 
-    public int enemiesLeft = 5;
+    public int enemiesLeft = 4;
     public int enemiesDefeated = 0;
 
     public TextMeshProUGUI treasureCountText;
@@ -39,14 +39,16 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         inventory = GetComponent<PlayerInventory>();
+        weapon = GetComponent<Weapon>(); 
 
-        // Check if inventory is properly initialized
+
+
         if (inventory == null)
         {
             Debug.LogError("PlayerInventory component is missing on the player!");
         }
 
-        weapon = FindFirstObjectByType<Weapon>(); // Get the Weapon component
+        
 
         // Check if weapon is found
         if (weapon == null)
@@ -165,6 +167,22 @@ public class PlayerMovement : MonoBehaviour
             livesText.text = "Lives left: " + lives;
         }
     }
+    private IEnumerator RespawnHealthPack(GameObject healthPack, float delay)
+    {
+        // Wait for the specified delay time
+        yield return new WaitForSeconds(delay);
+
+        // Reactivate the health pack after the delay
+        healthPack.SetActive(true);
+    }
+
+    private IEnumerator RespawnBullets(GameObject bullet, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        bullet.SetActive(true);
+    }
+
+
 
     // Check for collision to determine if the player is grounded
     private void OnCollisionEnter(Collision collision)
@@ -225,9 +243,22 @@ public class PlayerMovement : MonoBehaviour
 
         else if (collision.gameObject.CompareTag("gunAmmo"))
         {
-            Destroy(collision.gameObject);
-            weapon.bulletCount += 5;
-            weapon.UpdateBulletCountText();
+            Debug.Log("Ammo collision detected");
+            if (weapon.bulletCount < 6)
+            {
+                
+                collision.gameObject.SetActive(false);
+                weapon.bulletCount++;
+                weapon.UpdateBulletCountText();
+                Debug.Log("Bullet count increased to: " + weapon.bulletCount);
+                
+                StartCoroutine(RespawnBullets(collision.gameObject, 3f));
+            }
+
+            else if (weapon.bulletCount == 6)
+            {
+                Debug.Log("You can only hold 6 bullets!");
+            }
         }
 
         //else if (collision.gameObject.CompareTag("enemyBullet"))
@@ -235,28 +266,37 @@ public class PlayerMovement : MonoBehaviour
         //    lives--;
         //    UpdateLifeText();
         //}
+
+
         else if (collision.gameObject.CompareTag("healthPack"))
         {
-            if ((lives>=1) && (lives<3))
+            if ((lives >= 1) && (lives < 3))
             {
-                Destroy(collision.gameObject);
+                // Deactivate the health pack
+                collision.gameObject.SetActive(false);
+
+                // Increment lives and update the life text
                 lives++;
                 UpdateLifeText();
+
+                // Start the respawn coroutine to reactivate the health pack after 3 seconds
+                StartCoroutine(RespawnHealthPack(collision.gameObject, 3f));
             }
-            
-            else if (lives==3)
+            else if (lives == 3)
             {
                 Debug.Log("You already have the max lives!");
             }
         }
     }
 
-    public void LoseLife()
+
+
+    public void GameOver()
     {
         if (lives <= 0)
         {
             Debug.Log("Game Over!");
-            // Implement game over logic here
+            
         }
     }
 }
