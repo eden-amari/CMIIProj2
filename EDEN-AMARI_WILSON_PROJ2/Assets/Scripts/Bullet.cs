@@ -123,8 +123,8 @@ public class Bullet : MonoBehaviour
     {
         if (gameObject.CompareTag("enemyBullet") && collision.gameObject.CompareTag("Player"))
         {
-            playerMovement.lives--;
-            playerMovement.UpdateLifeText();
+            //playerMovement.lives--;
+            //playerMovement.UpdateLifeText();
             Destroy(gameObject);
         }
     }
