@@ -122,29 +122,33 @@ public class Weapon : MonoBehaviour
 
     private void FireProjectile(GameObject prefab, Transform spawnPoint, float speed)
     {
-        // Instantiate the projectile at the spawn point
-        Quaternion rotation = spawnPoint.rotation;
-        GameObject projectile = Instantiate(prefab, spawnPoint.position, rotation);
+        // Instantiate the projectile at the spawn point with the rotation adjusted by 90 degrees on the Y-axis
+        Quaternion rotation = spawnPoint.rotation * Quaternion.Euler(0, 180, 0);  // Apply 90-degree rotation on Y
+        GameObject projectile = Instantiate(prefab, spawnPoint.position, rotation);  // Use the modified rotation
+        Debug.Log("Spawn Point Forward: " + spawnPoint.forward);  // Debugging the forward direction
 
         // Get the Rigidbody component from the instantiated projectile
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
 
         if (rb != null)
         {
-            // Add force to the projectile to launch it forward
-            rb.AddForce(rotation * Vector3.forward * speed, ForceMode.VelocityChange);
-            rb.velocity = rotation * Vector3.forward * speed;
+            // Ensure that the projectile moves forward along the spawn point's forward direction
+            Vector3 forwardDirection = spawnPoint.forward;  // Direction in which to move the projectile
+            Debug.Log("Forward Direction: " + forwardDirection); // Debugging the forward direction
 
-            // Get the AudioSource component (if attached to the same object)
+            // Set the Rigidbody's velocity in the forward direction
+            rb.linearVelocity = forwardDirection * (speed * 2);  // Straight-line movement
+
+            // Optional: Disable gravity for a straight trajectory
+            rb.useGravity = false;
+
+            // Play the sound effect
             AudioSource audioSource = GetComponent<AudioSource>();
-
             if (audioSource != null)
             {
-                // Play grenadeSound1 immediately
                 audioSource.clip = grenadeSound1;
-                audioSource.Play(); // Play the first sound
+                audioSource.Play();
 
-                // Start the coroutine to play grenadeSound2 after 0.7 seconds
                 StartCoroutine(PlayDelayedSound(audioSource, 1f));
             }
         }
@@ -153,9 +157,124 @@ public class Weapon : MonoBehaviour
             Debug.LogError($"{prefab.name} prefab does not have a Rigidbody component!");
         }
 
-        // Optionally, destroy the projectile after a delay
-        Destroy(projectile, .5f);
+        // Attach the collision detection script to the projectile
+        // The projectile will now handle its own destruction upon collision
+        projectile.AddComponent<ProjectileCollision>();  // This will call OnCollisionEnter when it hits something
     }
+
+    //private void FireProjectile(GameObject prefab, Transform spawnPoint, float speed)
+    //{
+    //    // Instantiate the projectile at the spawn point with the rotation adjusted by 90 degrees on the Y-axis
+    //    Quaternion rotation = spawnPoint.rotation * Quaternion.Euler(0, 180, 0);  // Apply 90-degree rotation on Y
+    //    GameObject projectile = Instantiate(prefab, spawnPoint.position, rotation);  // Use the modified rotation
+    //    Debug.Log("Spawn Point Forward: " + spawnPoint.forward);  // Debugging the forward direction
+
+    //    // Get the Rigidbody component from the instantiated projectile
+    //    Rigidbody rb = projectile.GetComponent<Rigidbody>();
+
+    //    if (rb != null)
+    //    {
+    //        // Ensure that the projectile moves forward along the spawn point's forward direction
+    //        Vector3 forwardDirection = spawnPoint.forward;  // Direction in which to move the projectile
+    //        Debug.Log("Forward Direction: " + forwardDirection); // Debugging the forward direction
+
+    //        // Set the Rigidbody's velocity in the forward direction
+    //        rb.linearVelocity = forwardDirection * (speed*2);  // Straight-line movement
+
+    //        // Optional: Disable gravity for a straight trajectory
+    //        rb.useGravity = false;
+
+    //        // Play the sound effect
+    //        AudioSource audioSource = GetComponent<AudioSource>();
+    //        if (audioSource != null)
+    //        {
+    //            audioSource.clip = grenadeSound1;
+    //            audioSource.Play();
+
+    //            StartCoroutine(PlayDelayedSound(audioSource, 1f));
+    //        }
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError($"{prefab.name} prefab does not have a Rigidbody component!");
+    //    }
+
+    //    // Destroy the projectile after a short time to clean up
+    //    Destroy(projectile, 2f);  // Increase destroy time if you want the projectile to last longer
+    //}
+
+    //private void FireProjectile(GameObject prefab, Transform spawnPoint, float speed)
+    //{
+    //    // Instantiate the projectile at the spawn point
+    //    GameObject projectile = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);  // Use spawnPoint.rotation directly
+    //    Debug.Log("Spawn Point Forward: " + spawnPoint.forward);  // Debugging the forward direction
+
+    //    // Get the Rigidbody component from the instantiated projectile
+    //    Rigidbody rb = projectile.GetComponent<Rigidbody>();
+
+    //    if (rb != null)
+    //    {
+    //        // Ensure that the projectile moves forward along the spawn point's forward direction
+    //        Vector3 forwardDirection = spawnPoint.forward;  // Direction in which to move the projectile
+    //        Debug.Log("Forward Direction: " + forwardDirection); // Debugging the forward direction
+
+    //        // Set the Rigidbody's velocity in the forward direction
+    //        rb.linearVelocity = forwardDirection * speed;  // Straight-line movement
+
+    //        // Optional: Disable gravity for a straight trajectory
+    //        rb.useGravity = false;
+
+    //        // Play the sound effect
+    //        AudioSource audioSource = GetComponent<AudioSource>();
+    //        if (audioSource != null)
+    //        {
+    //            audioSource.clip = grenadeSound1;
+    //            audioSource.Play();
+
+    //            StartCoroutine(PlayDelayedSound(audioSource, 1f));
+    //        }
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError($"{prefab.name} prefab does not have a Rigidbody component!");
+    //    }
+
+    //    // Destroy the projectile after a short time to clean up
+    //    Destroy(projectile, 2f);  // Increase destroy time if you want the projectile to last longer
+    //}
+
+    //private void FireProjectile(GameObject prefab, Transform spawnPoint, float speed)
+    //{
+    //    // Instantiate the projectile at the spawn point
+    //    Quaternion rotation = spawnPoint.rotation;
+    //    GameObject projectile = Instantiate(prefab, spawnPoint.position, rotation);
+    //    Debug.Log("Spawn Point Forward: " + spawnPoint.forward);
+
+
+    //    // Get the Rigidbody component from the instantiated projectile
+    //    Rigidbody rb = projectile.GetComponent<Rigidbody>();
+
+    //    if (rb != null)
+    //    {
+    //        rb.AddForce(rotation * (Vector3.forward * 1.2f)* (speed * 1.3f), ForceMode.VelocityChange);
+    //        AudioSource audioSource = GetComponent<AudioSource>();
+
+    //        if (audioSource != null)
+    //        {
+    //            audioSource.clip = grenadeSound1;
+    //            audioSource.Play(); 
+
+    //            StartCoroutine(PlayDelayedSound(audioSource, 1f));
+    //        }
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError($"{prefab.name} prefab does not have a Rigidbody component!");
+    //    }
+
+
+    //    Destroy(projectile, .5f);
+    //}
 
     // Coroutine to play the second sound after a delay
     private IEnumerator PlayDelayedSound(AudioSource audioSource, float delay)

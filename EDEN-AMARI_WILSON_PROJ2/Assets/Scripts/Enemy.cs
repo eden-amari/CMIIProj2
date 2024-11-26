@@ -27,6 +27,7 @@ public class Enemy : MonoBehaviour
     private Vector3 originalPosition;
 
     public int enemyHealth = 3;
+    public AudioClip owSound;
 
     void Start()
     {
@@ -229,6 +230,11 @@ public class Enemy : MonoBehaviour
             enemyHealth--;
             // Destroy the enemy object
             Destroy(collision.gameObject);
+            AudioSource owSound = GetComponent<AudioSource>();
+            if (owSound != null)
+            {
+                owSound.Play(); // Play the sound
+            }
         }
 
         else if ((collision.gameObject.CompareTag("playerBullet")) && (enemyHealth == 1))
@@ -237,6 +243,11 @@ public class Enemy : MonoBehaviour
             playerMovement.enemiesLeft--;
             playerMovement.UpdateEnemyText();
             Destroy(gameObject);
+            AudioSource owSound = GetComponent<AudioSource>();
+            if (owSound != null)
+            {
+                owSound.Play(); // Play the sound
+            }
         }
 
         else if (collision.gameObject.CompareTag("Grenade")) 
