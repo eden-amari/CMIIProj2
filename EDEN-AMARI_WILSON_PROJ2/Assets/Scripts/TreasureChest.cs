@@ -11,8 +11,7 @@ public class TreasureChest : MonoBehaviour
    
 
     private Enemy enemyScript;
-    public AudioClip treausreChime;
-
+   
 
 
     // Start is called before the first frame update
@@ -80,18 +79,18 @@ public class TreasureChest : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            AudioSource treasureChime = GetComponent<AudioSource>();
-            if (treasureChime != null)
-            {
-                treasureChime.Play(); // Play the sound
-            }
-        }
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Player"))
+    //    {
+    //        AudioSource treasureChime = GetComponent<AudioSource>();
+    //        if (treasureChime != null)
+    //        {
+    //            treasureChime.Play(); // Play the sound
+    //        }
+    //    }
         
-    }
+    //}
 
     // Rotate the enemies to face the player
     //void RotateEnemiesToFacePlayer()

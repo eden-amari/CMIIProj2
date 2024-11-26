@@ -59,6 +59,7 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip treasureChime;
     public AudioClip loseSound;
     public AudioClip winSound;
+    public GameObject bgMusic;
 
     public void Start()
     {
@@ -303,19 +304,36 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-
         else if (collision.gameObject.CompareTag("Treasure"))
         {
-            AudioSource treasureChime = GetComponent<AudioSource>();
-            if (treasureChime != null)
+            if (!isGameOver)
             {
-                treasureChime.Play(); // Play the sound
-            }
-            treasureCount++;
-            treasureLeft--;
-            UpdateTreasureText();
-            Destroy(collision.gameObject);
+                AudioSource treasureChime = GetComponent<AudioSource>();
+                if (treasureChime != null)
+                {
+                    treasureChime.Play(); // Play the sound
+                }
+                treasureCount++;
+                treasureLeft--;
+                UpdateTreasureText();
+                Destroy(collision.gameObject);
+            }  // Prevent collecting treasure if game is over
+
+            
         }
+
+        //else if (collision.gameObject.CompareTag("Treasure"))
+        //{
+        //    AudioSource treasureChime = GetComponent<AudioSource>();
+        //    if (treasureChime != null)
+        //    {
+        //        treasureChime.Play(); // Play the sound
+        //    }
+        //    treasureCount++;
+        //    treasureLeft--;
+        //    UpdateTreasureText();
+        //    Destroy(collision.gameObject);
+        //}
 
 
         else if (collision.gameObject.CompareTag("enemyBullet"))
@@ -347,33 +365,40 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    //private void RestartGame()
-    //{
-    //    Time.timeScale = 1f;  // Resume the game
-    //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);  // Reload the current scene
-    //}
 
     public void UpdateWinLose()
     {
         // Trigger Game Over if lives are less than or equal to 0
         if (lives <= 0 && !isGameOver)
         {
+            GetComponent<Collider>().enabled = false;
             Debug.Log("Game Over!");
             isGameOver = true;  // Set Game Over state
             gameOverScreen.SetActive(true);  // Show Game Over screen
             gameOverPanel.SetActive(true);   // Show the Game Over panel
             gameOverText.text = "GAME OVER...";  // Set the text
             Time.timeScale = 0f;  // Pause the game (stop time flow)
+
+
+            AudioSource[] audioSources = GetComponents<AudioSource>();
+            foreach (AudioSource audio in audioSources)
+            {
+                audio.enabled = false;  // Disable audio source entirely
+            }
+
+            bgMusic.SetActive(false);
+            // Play lose sound (if desired)
             AudioSource loseSound = GetComponent<AudioSource>();
             if (loseSound != null)
             {
-                loseSound.Play(); // Play the sound
+                loseSound.Play();  // Play the lose sound
             }
         }
 
         // Check if player has won (all treasures collected and enemies defeated)
         if (treasureCount == 3 && treasureLeft == 0 && enemiesLeft == 0 && !isWon)
         {
+            GetComponent<Collider>().enabled = false;
             Debug.Log("You win!");
             isWon = true;  // Set Win state
             winScreen.SetActive(true);  // Show Win screen
@@ -381,10 +406,21 @@ public class PlayerMovement : MonoBehaviour
           
             winText.text = "YOU WIN!";  // Set the text
 
+            AudioSource[] audioSources = GetComponents<AudioSource>();
+            foreach (AudioSource audio in audioSources)
+            {
+                audio.enabled = false;  
+            }
+            bgMusic.SetActive(false);
+
             AudioSource winSound = GetComponent<AudioSource>();
             if (winSound != null)
             {
-                winSound.Play(); // Play the sound
+                winSound.Play(); 
+            }
+            else
+            {
+                Debug.Log("No win audio detected bro");
             }
         }
     }
