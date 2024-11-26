@@ -233,11 +233,17 @@ public class Enemy : MonoBehaviour
 
         else if ((collision.gameObject.CompareTag("playerBullet")) && (enemyHealth == 1))
         {
+            playerMovement.enemiesDefeated++;
+            playerMovement.enemiesLeft--;
+            playerMovement.UpdateEnemyText();
             Destroy(gameObject);
         }
 
         else if (collision.gameObject.CompareTag("Grenade")) 
         {
+            playerMovement.enemiesDefeated++;
+            playerMovement.enemiesLeft--;
+            playerMovement.UpdateEnemyText();
             Destroy(gameObject);
         }
     }

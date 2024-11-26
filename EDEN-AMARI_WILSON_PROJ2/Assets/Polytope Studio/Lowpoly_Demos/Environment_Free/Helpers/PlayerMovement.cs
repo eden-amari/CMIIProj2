@@ -45,6 +45,12 @@ public class PlayerMovement : MonoBehaviour
     public GameObject winScreen;  // Reference to the Game Over screen Canvas
     public GameObject winPanel;
     public TextMeshProUGUI winText;          // Optional: Game Over message Text
+    //--------------------------------------new variables for bc ammo broken
+    public int bulletCount; 
+    public int grenadeCount;
+
+    public TextMeshProUGUI bulletCountText; // Reference to the TextMeshProUGUI component
+    public TextMeshProUGUI grenadeCountText; // Reference to the grenade count text
 
 
     public bool isGameOver = false;
@@ -63,7 +69,8 @@ public class PlayerMovement : MonoBehaviour
             Debug.LogError("PlayerInventory component is missing on the player!");
         }
 
-        
+        bulletCount = 6;
+        grenadeCount = 2;
 
         //// Check if weapon is found
         //if (weapon == null)
@@ -207,9 +214,22 @@ public class PlayerMovement : MonoBehaviour
         bullet.SetActive(true);
     }
 
+    public void UpdateBulletCountText()
+    {
+        if (bulletCountText != null)
+        {
+            bulletCountText.text = "Bullets: " + bulletCount; // Update the TextMeshPro text
+        }
+    }
 
-
-
+    // Update the grenade count UI text
+    public void UpdateGrenadeCountText()
+    {
+        if (grenadeCountText != null)
+        {
+            grenadeCountText.text = "Grenades in the launcher: " + grenadeCount;
+        }
+    }
 
     // Check for collision to determine if the player is grounded
     public void OnCollisionEnter(Collision collision)
@@ -253,23 +273,28 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("GrenadePrefab"))
         {
-            if (weapon != null)
-            {
-                weapon.grenadeCount++; // Increment the grenade count
-                weapon.UpdateGrenadeCountText(); // Update the grenade UI count if needed
-            }
-            Destroy(collision.gameObject); // Destroy the grenade
+           grenadeCount++; // Increment the grenade count
+           grenadeCountText.text = "Grenades in the launcher: " + grenadeCount;
+           Debug.Log("Grenade collected! Total grenades: " + grenadeCount);
+           Destroy(collision.gameObject); // Destroy the grenade
+           
         }
 
         else if (collision.gameObject.CompareTag("gunAmmo"))
         {
-            if (weapon != null)
+            if (bulletCount < 6)
             {
-                weapon.bulletCount++; // Increment the grenade count
-                weapon.UpdateBulletCountText(); // Update the grenade UI count if needed
+                collision.gameObject.SetActive(false); //working
+                bulletCount++; //working
+                bulletCountText.text = "Bullets: " + bulletCount;
+                Debug.Log("Bullet collected! Total bullets: " + bulletCount);
+                StartCoroutine(RespawnBullets(collision.gameObject, 3f));
             }
-            collision.gameObject.SetActive(false); // Destroy the grenade
-            StartCoroutine(RespawnBullets(collision.gameObject, 3f));
+
+            else
+            {
+                Debug.Log("You can't hold more than 6 bullets!");
+            }
         }
 
 
@@ -342,35 +367,6 @@ public class PlayerMovement : MonoBehaviour
             winText.text = "YOU WIN!";  // Set the text
         }
     }
-
-
-    //public void UpdateWinLose()
-    //{
-    //    if (lives <= 0)
-    //    {
-    //        Debug.Log("Game Over!");
-    //        isGameOver = true;  // Trigger Game Over
-    //        gameOverScreen.SetActive(true);
-    //        gameOverPanel.SetActive(true);
-    //        restartButton.gameObject.SetActive(true);
-    //        gameOverText.text = "GAME OVER...";
-    //        Time.timeScale = 0f;
-    //        RestartGame();
-
-    //    }
-
-    //    if (((treasureCount==3) && (treasureLeft == 0)) && (enemiesLeft==0))
-    //    {
-    //        Debug.Log("You win!");
-    //        isWon = true;
-    //        winScreen.SetActive(true);
-    //        winPanel.SetActive(true);
-    //        restartButton.gameObject.SetActive(true);
-    //        winText.text = "YOU WIN!";
-    //        RestartGame();
-    //    }
-    //}
-
 
 }
 

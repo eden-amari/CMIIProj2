@@ -8,7 +8,7 @@ public class Weapon : MonoBehaviour
     public Transform bulletSpawnPoint; // The point where the bullet spawns
     public GameObject bulletPrefab; // The bullet prefab
     public float bulletSpeed = 30f; // Speed of the bullet
-    public int bulletCount; // Initial bullet count
+    //public int bulletCount; // Initial bullet count
 
     // Grenade variables
     public Transform launchPoint; // The point from where the grenade will be launched
@@ -17,23 +17,24 @@ public class Weapon : MonoBehaviour
     public float maxLaunchHeight = 1.5f; // Maximum height of the arc
     public Camera mainCamera; // Reference to the main camera
     public float launchDuration = 2f; // Duration of the launch
-    public int grenadeCount = 1; // Initial grenade count
+    //public int grenadeCount = 1; // Initial grenade count
 
     private PlayerInventory playerInventory; // Reference to the player's inventory
+    private PlayerMovement playerMovement;
     //private bool isLaunching = false; // To prevent multiple grenade launches
 
     // TextMesh Pro references
-    public TextMeshProUGUI bulletCountText; // Reference to the TextMeshProUGUI component
-    public TextMeshProUGUI grenadeCountText; // Reference to the grenade count text
+    
 
     public void Start()
     {
         // Get the PlayerInventory component attached to the player
         playerInventory = FindFirstObjectByType<PlayerInventory>();
-        UpdateBulletCountText(); // Initialize the bullet count text
-        UpdateGrenadeCountText(); // Initialize the grenade count text
+        playerMovement = FindFirstObjectByType<PlayerMovement>();
+        playerMovement.UpdateBulletCountText(); // Initialize the bullet count text
+        playerMovement.UpdateGrenadeCountText(); // Initialize the grenade count text
 
-        bulletCount = 6; // Initial bullet count
+        playerMovement.bulletCount = 6; // Initial bullet count
 
 }
 
@@ -54,11 +55,11 @@ public class Weapon : MonoBehaviour
         // Check if the weapon is active and the current weapon in inventory before allowing firing
         else if (playerInventory.currentWeapon == this && gameObject.activeSelf)
         {
-            Debug.Log($"Current Weapon: {this.name}, Grenade Count: {grenadeCount}"); // Log the weapon name and grenade count
+            Debug.Log($"Current Weapon: {this.name}, Grenade Count: {playerMovement.grenadeCount}"); // Log the weapon name and grenade count
 
             if (gameObject.CompareTag("Gun") && Input.GetMouseButtonDown(0)) 
             {
-                if (bulletCount > 0) 
+                if (playerMovement.bulletCount > 0) 
                 {
                     Debug.Log("Firing Gun!");
                     FireGun();
@@ -70,12 +71,12 @@ public class Weapon : MonoBehaviour
             }
             else if (gameObject.CompareTag("GrenadeLauncher") && Input.GetMouseButtonDown(0))
             {
-                if (grenadeCount > 0)
+                if (playerMovement.grenadeCount > 0)
                 {
                     Debug.Log("Firing Grenade!");
                     FireProjectile(grenadePrefab, launchPoint, grenadeSpeed); // Correct function call
-                    grenadeCount--; // Decrease grenade count
-                    UpdateGrenadeCountText(); // Update the text display
+                    playerMovement.grenadeCount--; // Decrease grenade count
+                    playerMovement.UpdateGrenadeCountText(); // Update the text display
                 }
                 else
                 {
@@ -89,8 +90,8 @@ public class Weapon : MonoBehaviour
     private void FireGun()
     {
         ShootGun(bulletPrefab, bulletSpawnPoint, bulletSpeed);
-        bulletCount--; // Decrease the bullet count after firing
-        UpdateBulletCountText(); // Update the text display
+        playerMovement.bulletCount--; // Decrease the bullet count after firing
+        playerMovement.UpdateBulletCountText(); // Update the text display
     }
 
     // Fire the grenade projectile with a parabolic arc
@@ -285,36 +286,21 @@ public class Weapon : MonoBehaviour
     //}
 
     // Update the bullet count UI text
-    public void UpdateBulletCountText()
-    {
-        if (bulletCountText != null)
-        {
-            bulletCountText.text = "Bullets: " + bulletCount; // Update the TextMeshPro text
-        }
-    }
-
-    // Update the grenade count UI text
-    public void UpdateGrenadeCountText()
-    {
-        if (grenadeCountText != null)
-        {
-            grenadeCountText.text = "Grenades in the launcher: " + grenadeCount;
-        }
-    }
+    
 
     private void OnCollisionEnter(Collision collision)
     {
         // If the player collides with the grenade, add to the grenade count and destroy the grenade object
-        if (collision.gameObject.CompareTag("Grenade"))
-        {
-            if (collision.gameObject.CompareTag("Player"))
-            {
-                grenadeCount++; // Add one grenade to the player's inventory
-                UpdateGrenadeCountText(); // Update the displayed grenade count
-                Destroy(collision.gameObject); // Destroy the grenade, not the weapon
-                Debug.Log("Grenade collected! Total grenades: " + grenadeCount);
-            }
-        }
+        //if (collision.gameObject.CompareTag("Grenade"))
+        //{
+        //    if (collision.gameObject.CompareTag("Player"))
+        //    {
+        //        playerMovement.grenadeCount++; // Add one grenade to the player's inventory
+        //        UpdateGrenadeCountText(); // Update the displayed grenade count
+        //        Destroy(collision.gameObject); // Destroy the grenade, not the weapon
+        //        Debug.Log("Grenade collected! Total grenades: " + playerMovement.grenadeCount);
+        //    }
+        //}
 
         // If the weapon collides with the player, equip the weapon (do not destroy it)
         if (collision.gameObject.CompareTag("Player") && gameObject.CompareTag("Weapon"))
