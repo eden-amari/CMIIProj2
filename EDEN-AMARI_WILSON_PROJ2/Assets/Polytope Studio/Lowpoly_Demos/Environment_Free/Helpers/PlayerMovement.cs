@@ -55,6 +55,11 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isGameOver = false;
     public bool isWon = false;
+
+    public AudioClip treasureChime;
+    public AudioClip loseSound;
+    public AudioClip winSound;
+
     public void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -301,6 +306,11 @@ public class PlayerMovement : MonoBehaviour
 
         else if (collision.gameObject.CompareTag("Treasure"))
         {
+            AudioSource treasureChime = GetComponent<AudioSource>();
+            if (treasureChime != null)
+            {
+                treasureChime.Play(); // Play the sound
+            }
             treasureCount++;
             treasureLeft--;
             UpdateTreasureText();
@@ -354,6 +364,11 @@ public class PlayerMovement : MonoBehaviour
             gameOverPanel.SetActive(true);   // Show the Game Over panel
             gameOverText.text = "GAME OVER...";  // Set the text
             Time.timeScale = 0f;  // Pause the game (stop time flow)
+            AudioSource loseSound = GetComponent<AudioSource>();
+            if (loseSound != null)
+            {
+                loseSound.Play(); // Play the sound
+            }
         }
 
         // Check if player has won (all treasures collected and enemies defeated)
@@ -365,6 +380,12 @@ public class PlayerMovement : MonoBehaviour
             winPanel.SetActive(true);   // Show the Win panel
           
             winText.text = "YOU WIN!";  // Set the text
+
+            AudioSource winSound = GetComponent<AudioSource>();
+            if (winSound != null)
+            {
+                winSound.Play(); // Play the sound
+            }
         }
     }
 

@@ -5,14 +5,15 @@ public class TreasureChest : MonoBehaviour
 {
 
     public bool isPlayerWithTreasure;
-
-
     public bool isPlayerInRange;
    
     private SphereCollider chestCollider; // The collider for the treasure chest
    
-   
+
     private Enemy enemyScript;
+    public AudioClip treausreChime;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -76,6 +77,20 @@ public class TreasureChest : MonoBehaviour
     {
         isPlayerWithTreasure = true; // Player has picked up the treasure
         Debug.Log("Player picked up the treasure.");
+    }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            AudioSource treasureChime = GetComponent<AudioSource>();
+            if (treasureChime != null)
+            {
+                treasureChime.Play(); // Play the sound
+            }
+        }
+        
     }
 
     // Rotate the enemies to face the player

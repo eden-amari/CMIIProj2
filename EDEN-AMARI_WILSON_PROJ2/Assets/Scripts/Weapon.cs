@@ -24,7 +24,10 @@ public class Weapon : MonoBehaviour
     //private bool isLaunching = false; // To prevent multiple grenade launches
 
     // TextMesh Pro references
-    
+    public AudioClip grenadeSound1;  // Declare grenadeSound1
+    public AudioClip grenadeSound2;  // Declare grenadeSound2
+ 
+
 
     public void Start()
     {
@@ -90,6 +93,11 @@ public class Weapon : MonoBehaviour
     private void FireGun()
     {
         ShootGun(bulletPrefab, bulletSpawnPoint, bulletSpeed);
+        AudioSource audioSource = GetComponent<AudioSource>();
+        if (audioSource != null)
+        {
+            audioSource.Play(); // Play the sound
+        }
         playerMovement.bulletCount--; // Decrease the bullet count after firing
         playerMovement.UpdateBulletCountText(); // Update the text display
     }
@@ -167,7 +175,7 @@ public class Weapon : MonoBehaviour
 
     private void FireProjectile(GameObject prefab, Transform spawnPoint, float speed)
     {
-        // Instantiate the projectile at the spawn point with no rotation, or you can use spawnPoint.rotation if you want to inherit rotation
+        // Instantiate the projectile at the spawn point
         Quaternion rotation = spawnPoint.rotation;
         GameObject projectile = Instantiate(prefab, spawnPoint.position, rotation);
 
@@ -178,17 +186,43 @@ public class Weapon : MonoBehaviour
         {
             // Add force to the projectile to launch it forward
             rb.AddForce(rotation * Vector3.forward * speed, ForceMode.VelocityChange);
+
+            // Get the AudioSource component (if attached to the same object)
+            AudioSource audioSource = GetComponent<AudioSource>();
+
+            if (audioSource != null)
+            {
+                // Play grenadeSound1 immediately
+                audioSource.clip = grenadeSound1;
+                audioSource.Play(); // Play the first sound
+
+                // Start the coroutine to play grenadeSound2 after 0.7 seconds
+                StartCoroutine(PlayDelayedSound(audioSource, 0.7f));
+            }
         }
         else
         {
             Debug.LogError($"{prefab.name} prefab does not have a Rigidbody component!");
         }
 
-        // Optionally, destroy the projectile after a delay, for example, after 5 seconds
-        Destroy(projectile, 1f); // Destroy the projectile after 5 seconds
-
-        // No need for a return here, since the method is void.
+        // Optionally, destroy the projectile after a delay
+        Destroy(projectile, 1f);
     }
+
+    // Coroutine to play the second sound after a delay
+    private IEnumerator PlayDelayedSound(AudioSource audioSource, float delay)
+    {
+        yield return new WaitForSeconds(delay); // Wait for the specified delay
+
+        // After the delay, play grenadeSound2
+        if (audioSource != null)
+        {
+            audioSource.clip = grenadeSound2; // Set the second sound
+            audioSource.Play(); // Play the second sound
+        }
+    }
+
+
 
 
     //private GameObject FireProjectile(GameObject prefab, Transform spawnPoint, float speed)
@@ -286,7 +320,7 @@ public class Weapon : MonoBehaviour
     //}
 
     // Update the bullet count UI text
-    
+
 
     private void OnCollisionEnter(Collision collision)
     {
