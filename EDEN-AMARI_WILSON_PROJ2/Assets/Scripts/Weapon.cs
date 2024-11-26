@@ -89,6 +89,9 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    
+
+
     // Fire the gun projectile
     private void FireGun()
     {
@@ -293,10 +296,17 @@ public class Weapon : MonoBehaviour
     {
 
         // If the weapon collides with the player, equip the weapon (do not destroy it)
-        if (collision.gameObject.CompareTag("Player") && gameObject.CompareTag("Weapon"))
+      
+
+        if (collision.gameObject.CompareTag("Player"))
         {
             Equip(); // Equip the weapon if it's the right one
             Debug.Log("Weapon Equipped: " + gameObject.name);
+
+            if (gameObject.CompareTag("GrenadeLauncher"))
+            {
+                Debug.Log("Grenade Launcher picked up!");
+            }
         }
     }
 

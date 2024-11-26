@@ -278,6 +278,24 @@ public class PlayerMovement : MonoBehaviour
                 inventory.AddWeapon(gun);
             }
         }
+
+        else if (collision.gameObject.CompareTag("GrenadeLauncher"))
+        {
+            if (inventory.currentWeapon != null)
+            {
+                inventory.currentWeapon.gameObject.SetActive(false);
+            }
+            collision.gameObject.transform.SetParent(transform);
+            collision.gameObject.transform.localPosition = new Vector3(0.47f, .3f, .8f);
+            collision.gameObject.transform.localRotation = Quaternion.Euler(0, 180f, 0f);
+
+            Weapon grenadeLauncher = collision.gameObject.GetComponent<Weapon>();
+            if (grenadeLauncher != null && inventory != null)
+            {
+                inventory.AddWeapon(grenadeLauncher);
+            }
+        }
+   
         else if (collision.gameObject.CompareTag("GrenadePrefab"))
         {
             grenadeCount++;
